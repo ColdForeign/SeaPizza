@@ -1,5 +1,7 @@
 using SeaPizza.Host.Configurations;
+using SeaPizza.Infrastructure;
 using SeaPizza.Infrastructure.Common;
+using SeaPizza.Infrastructure.Logging.Serilog;
 using Serilog;
 
 StaticLogger.EnsureInitialized();
@@ -8,9 +10,12 @@ Log.Information("Server Booting Up...");
 try
 {
     var builder = WebApplication.CreateBuilder(args);
-
+    builder.AddConfigurations().RegisterSerilog();
+    builder.Services.AddInfrastructure(builder.Configuration);
     builder.Services.AddRazorPages();
     var app = builder.Build();
+
+    await app.Services.InitializeDatabasesAsync();
 
     if (app.Environment.IsDevelopment())
     {
@@ -26,6 +31,9 @@ try
     app.UseBlazorFrameworkFiles();
     app.UseStaticFiles();
     app.UseRouting();
+
+    app.UseInfrastructure(builder.Configuration);
+    app.MapEndpoints();
 
     app.MapRazorPages();
     app.MapControllers();

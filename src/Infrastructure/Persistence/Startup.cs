@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using SeaPizza.Infrastructure.Common;
 using SeaPizza.Infrastructure.Persistence.Context;
 using SeaPizza.Infrastructure.Persistence.Initialization;
 using Serilog;
@@ -35,10 +36,10 @@ internal static class Startup
                 m.UseNpgsql(databaseSettings.ConnectionString);
             })
 
-            .AddTransient<IDatabaseInitializer, DatabaseInitializer>()
-            .AddTransient<ApplicationDbInitializer>()
-            .AddTransient<ApplicationDbSeeder>()
-            .AddServices(typeof(ICustomSeeder), ServiceLifetime.Transient)
-            .AddTransient<CustomSeederRunner>();
+            .AddTransient<IDatabaseInitializer, DatabaseInitializer>();
+            //.AddTransient<ApplicationDbInitializer>()
+            //.AddTransient<ApplicationDbSeeder>()
+            //.AddServices(typeof(ICustomSeeder), ServiceLifetime.Transient)
+            //.AddTransient<CustomSeederRunner>();
     }
 }
