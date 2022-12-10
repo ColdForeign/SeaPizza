@@ -36,7 +36,7 @@ public abstract class BaseDbContext : IdentityDbContext<SeaPizzaUser, SeaPizzaRo
         // TODO: We want this only for development probably... maybe better make it configurable in logger.json config?
         optionsBuilder.EnableSensitiveDataLogging();
 
-        optionsBuilder.UseNpgsql(_dbSettings.ConnectionString);
+        optionsBuilder.UseNpgsql(_dbSettings.ConnectionString, e => e.MigrationsAssembly(GetType().Assembly.FullName));
     }
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())

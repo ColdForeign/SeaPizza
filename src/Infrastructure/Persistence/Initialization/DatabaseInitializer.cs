@@ -31,7 +31,7 @@ internal class DatabaseInitializer : IDatabaseInitializer
         using var scope = _serviceProvider.CreateScope();
 
         // Then run the initialization in the new scope
-        //await scope.ServiceProvider.GetRequiredService<ApplicationDbInitializer>()
-        //    .InitializeAsync(cancellationToken);
+        await scope.ServiceProvider.GetRequiredService<ApplicationDbInitializer>()
+            .InitializeAsync(cancellationToken);
     }
 }

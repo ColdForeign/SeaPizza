@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SeaPizza.Infrastructure.Auth;
 using SeaPizza.Infrastructure.Common;
 using SeaPizza.Infrastructure.Persistence;
 using SeaPizza.Infrastructure.Persistence.Initialization;
@@ -21,6 +22,7 @@ public static class Startup
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration config)
     {
         return services
+            .AddAuth(config)
             .AddApiVersioning()
             .AddPersistence()
             .AddRouting(options => options.LowercaseUrls = true)

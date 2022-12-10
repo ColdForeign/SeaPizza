@@ -33,13 +33,13 @@ internal static class Startup
             .AddDbContext<SeaPizzaDbContext>((p, m) =>
             {
                 var databaseSettings = p.GetRequiredService<IOptions<DatabaseSettings>>().Value;
-                m.UseNpgsql(databaseSettings.ConnectionString);
+                m.UseNpgsql(databaseSettings.ConnectionString, e => e.MigrationsAssembly("Infrastructure"));
             })
 
-            .AddTransient<IDatabaseInitializer, DatabaseInitializer>();
-            //.AddTransient<ApplicationDbInitializer>()
-            //.AddTransient<ApplicationDbSeeder>()
-            //.AddServices(typeof(ICustomSeeder), ServiceLifetime.Transient)
-            //.AddTransient<CustomSeederRunner>();
+            .AddTransient<IDatabaseInitializer, DatabaseInitializer>()
+            .AddTransient<ApplicationDbInitializer>()
+            .AddTransient<ApplicationDbSeeder>()
+            .AddServices(typeof(ICustomSeeder), ServiceLifetime.Transient)
+            .AddTransient<CustomSeederRunner>();
     }
 }
