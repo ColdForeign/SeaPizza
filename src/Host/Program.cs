@@ -1,26 +1,47 @@
-var builder = WebApplication.CreateBuilder(args);
+using SeaPizza.Host.Configurations;
+using SeaPizza.Infrastructure.Common;
+using Serilog;
 
-builder.Services.AddRazorPages();
-var app = builder.Build();
+StaticLogger.EnsureInitialized();
+Log.Information("Server Booting Up...");
 
-if (app.Environment.IsDevelopment())
+try
 {
-    app.UseWebAssemblyDebugging();
+    var builder = WebApplication.CreateBuilder(args);
+
+    builder.Services.AddRazorPages();
+    var app = builder.Build();
+
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseWebAssemblyDebugging();
+    }
+    else
+    {
+        app.UseExceptionHandler("/Error");
+        app.UseHsts();
+    }
+
+    app.UseHttpsRedirection();
+    app.UseBlazorFrameworkFiles();
+    app.UseStaticFiles();
+    app.UseRouting();
+
+    app.MapRazorPages();
+    app.MapControllers();
+    app.MapFallbackToFile("index.html");
+
+    app.Run();
+
 }
-else
+catch (Exception ex) when (!ex.GetType().Name.Equals("HostAbortedException", StringComparison.Ordinal))
 {
-    app.UseExceptionHandler("/Error");
-    app.UseHsts();
+    StaticLogger.EnsureInitialized();
+    Log.Fatal(ex, "Unhandled exception");
 }
-
-
-app.UseHttpsRedirection();
-app.UseBlazorFrameworkFiles();
-app.UseStaticFiles();
-app.UseRouting();
-
-app.MapRazorPages();
-app.MapControllers();
-app.MapFallbackToFile("index.html");
-
-app.Run();
+finally
+{
+    StaticLogger.EnsureInitialized();
+    Log.Information("Server Shutting down...");
+    Log.CloseAndFlush();
+}

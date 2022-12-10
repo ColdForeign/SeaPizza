@@ -1,0 +1,7 @@
+{
+  "LoggerSettings": {
+    "AppName": "SeaPizza",
+    "WriteToFile": false,
+    "StructuredConsoleLogging": true
+  }
+}
