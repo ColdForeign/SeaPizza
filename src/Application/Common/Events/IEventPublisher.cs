@@ -1,4 +1,5 @@
 ﻿using SeaPizza.Application.Common.Interfaces;
+using SeaPizza.Shared.Events;
 using System.Threading.Tasks;
 
 namespace SeaPizza.Application.Common.Events;
