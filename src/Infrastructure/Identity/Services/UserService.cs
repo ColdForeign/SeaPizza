@@ -1,116 +1,133 @@
-﻿using SeaPizza.Application.Identity.Users;
+﻿using Mapster;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Options;
+using SeaPizza.Application.Common.Events;
+using SeaPizza.Application.Common.Exceptions;
+using SeaPizza.Application.Common.FileStorage;
+using SeaPizza.Application.Common.Mailing;
+using SeaPizza.Application.Identity.Users;
 using SeaPizza.Application.Identity.Users.Password;
+using SeaPizza.Infrastructure.Auth;
+using SeaPizza.Infrastructure.Persistence.Context;
+using SeaPizza.Shared.Authorization;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace SeaPizza.Infrastructure.Identity.Services;
 
-internal class UserService : IUserService
+internal partial class UserService : IUserService
 {
-    public Task<string> AssignRolesAsync(string userId, UserRolesRequest request, CancellationToken cancellationToken)
+    private readonly SignInManager<SeaPizzaUser> _signInManager;
+    private readonly UserManager<SeaPizzaUser> _userManager;
+    private readonly RoleManager<SeaPizzaRole> _roleManager;
+    private readonly SeaPizzaDbContext _db;
+    private readonly IJobService _jobService;
+    private readonly IMailService _mailService;
+    private readonly SecuritySettings _securitySettings;
+    private readonly IFileStorageService _fileStorage;
+    private readonly IEventPublisher _events;
+    private readonly ICacheService _cache;
+    private readonly ICacheKeyService _cacheKeys;
+
+    public UserService(
+        SignInManager<SeaPizzaUser> signInManager,
+        UserManager<SeaPizzaUser> userManager,
+        RoleManager<SeaPizzaRole> roleManager,
+        SeaPizzaDbContext db,
+        IJobService jobService,
+        IMailService mailService,
+        IFileStorageService fileStorage,
+        IEventPublisher events,
+        ICacheService cache,
+        ICacheKeyService cacheKeys,
+        IOptions<SecuritySettings> securitySettings)
     {
-        throw new System.NotImplementedException();
+        _signInManager = signInManager;
+        _userManager = userManager;
+        _roleManager = roleManager;
+        _db = db;
+        _jobService = jobService;
+        _mailService = mailService;
+        _fileStorage = fileStorage;
+        _events = events;
+        _cache = cache;
+        _cacheKeys = cacheKeys;
+        _securitySettings = securitySettings.Value;
     }
 
-    public Task ChangePasswordAsync(ChangePasswordRequest request, string userId)
+    public async Task<PaginationResponse<UserDetailsDto>> SearchAsync(UserListFilter filter, CancellationToken cancellationToken)
     {
-        throw new System.NotImplementedException();
+        var spec = new EntitiesByPaginationFilterSpec<SeaPizzaUser>(filter);
+
+        var users = await _userManager.Users
+            .WithSpecification(spec)
+            .ProjectToType<UserDetailsDto>()
+            .ToListAsync(cancellationToken);
+        int count = await _userManager.Users
+            .CountAsync(cancellationToken);
+
+        return new PaginationResponse<UserDetailsDto>(users, count, filter.PageNumber, filter.PageSize);
     }
 
-    public Task<string> ConfirmEmailAsync(string userId, string code, string tenant, CancellationToken cancellationToken)
+    public async Task<bool> ExistsWithNameAsync(string name)
     {
-        throw new System.NotImplementedException();
+        EnsureValidTenant();
+        return await _userManager.FindByNameAsync(name) is not null;
     }
 
-    public Task<string> ConfirmPhoneNumberAsync(string userId, string code)
+    public async Task<bool> ExistsWithEmailAsync(string email, string? exceptId = null)
     {
-        throw new System.NotImplementedException();
+        return await _userManager.FindByEmailAsync(email.Normalize()) is SeaPizzaUser user && user.Id != exceptId;
     }
 
-    public Task<string> CreateAsync(CreateUserRequest request, string origin)
+    public async Task<bool> ExistsWithPhoneNumberAsync(string phoneNumber, string? exceptId = null)
     {
-        throw new System.NotImplementedException();
+        EnsureValidTenant();
+        return await _userManager.Users.FirstOrDefaultAsync(x => x.PhoneNumber == phoneNumber) is SeaPizzaUser user && user.Id != exceptId;
     }
 
-    public Task<bool> ExistsWithEmailAsync(string email, string? exceptId = null)
+    public async Task<List<UserDetailsDto>> GetListAsync(CancellationToken cancellationToken) =>
+        (await _userManager.Users
+                .AsNoTracking()
+                .ToListAsync(cancellationToken))
+            .Adapt<List<UserDetailsDto>>();
+
+    public Task<int> GetCountAsync(CancellationToken cancellationToken) =>
+        _userManager.Users.AsNoTracking().CountAsync(cancellationToken);
+
+    public async Task<UserDetailsDto> GetAsync(string userId, CancellationToken cancellationToken)
     {
-        throw new System.NotImplementedException();
+        var user = await _userManager.Users
+            .AsNoTracking()
+            .Where(u => u.Id == userId)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        _ = user ?? throw new NotFoundException("User Not Found.");
+
+        return user.Adapt<UserDetailsDto>();
     }
 
-    public Task<bool> ExistsWithNameAsync(string name)
+    public async Task ToggleStatusAsync(ToggleUserStatusRequest request, CancellationToken cancellationToken)
     {
-        throw new System.NotImplementedException();
-    }
+        var user = await _userManager.Users.Where(u => u.Id == request.UserId).FirstOrDefaultAsync(cancellationToken);
 
-    public Task<bool> ExistsWithPhoneNumberAsync(string phoneNumber, string? exceptId = null)
-    {
-        throw new System.NotImplementedException();
-    }
+        _ = user ?? throw new NotFoundException("User Not Found.");
 
-    public Task<string> ForgotPasswordAsync(ForgotPasswordRequest request, string origin)
-    {
-        throw new System.NotImplementedException();
-    }
+        bool isAdmin = await _userManager.IsInRoleAsync(user, SeaPizzaRoles.Admin);
+        if (isAdmin)
+        {
+            throw new ConflictException("Administrators Profile's Status cannot be toggled");
+        }
 
-    public Task<UserDetailsDto> GetAsync(string userId, CancellationToken cancellationToken)
-    {
-        throw new System.NotImplementedException();
-    }
+        user.IsActive = request.ActivateUser;
 
-    public Task<int> GetCountAsync(CancellationToken cancellationToken)
-    {
-        throw new System.NotImplementedException();
-    }
+        await _userManager.UpdateAsync(user);
 
-    public Task<List<UserDetailsDto>> GetListAsync(CancellationToken cancellationToken)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public Task<string> GetOrCreateFromPrincipalAsync(ClaimsPrincipal principal)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public Task<List<string>> GetPermissionsAsync(string userId, CancellationToken cancellationToken)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public Task<List<UserRoleDto>> GetRolesAsync(string userId, CancellationToken cancellationToken)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public Task<bool> HasPermissionAsync(string userId, string permission, CancellationToken cancellationToken = default)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public Task InvalidatePermissionCacheAsync(string userId, CancellationToken cancellationToken)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public Task<string> ResetPasswordAsync(ResetPasswordRequest request)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public Task<PaginationResponse<UserDetailsDto>> SearchAsync(UserListFilter filter, CancellationToken cancellationToken)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public Task ToggleStatusAsync(ToggleUserStatusRequest request, CancellationToken cancellationToken)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public Task UpdateAsync(UpdateUserRequest request, string userId)
-    {
-        throw new System.NotImplementedException();
+        //await _events.PublishAsync(new SeaPizzaUserUpdatedEvent(user.Id));
     }
 }
