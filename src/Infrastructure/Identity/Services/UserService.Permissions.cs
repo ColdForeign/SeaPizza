@@ -32,17 +32,4 @@ internal partial class UserService
 
         return permissions.Distinct().ToList();
     }
-
-    public async Task<bool> HasPermissionAsync(string userId, string permission, CancellationToken cancellationToken)
-    {
-        var permissions = await _cache.GetOrSetAsync(
-            _cacheKeys.GetCacheKey(SeaPizzaClaims.Permission, userId),
-            () => GetPermissionsAsync(userId, cancellationToken),
-            cancellationToken: cancellationToken);
-
-        return permissions?.Contains(permission) ?? false;
-    }
-
-    public Task InvalidatePermissionCacheAsync(string userId, CancellationToken cancellationToken) =>
-        _cache.RemoveAsync(_cacheKeys.GetCacheKey(SeaPizzaClaims.Permission, userId), cancellationToken);
 }

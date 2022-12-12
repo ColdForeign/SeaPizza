@@ -11,18 +11,6 @@ namespace SeaPizza.Infrastructure.Identity.Services;
 
 internal partial class UserService
 {
-    private async Task<string> GetEmailVerificationUriAsync(SeaPizzaUser user, string origin)
-    {
-        string code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-        code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-        const string route = "api/users/confirm-email/";
-        var endpointUri = new Uri(string.Concat($"{origin}/", route));
-        string verificationUri = QueryHelpers.AddQueryString(endpointUri.ToString(), QueryStringKeys.UserId, user.Id);
-        verificationUri = QueryHelpers.AddQueryString(verificationUri, QueryStringKeys.Code, code);
-        verificationUri = QueryHelpers.AddQueryString(verificationUri, MultitenancyConstants.TenantIdName, _currentTenant.Id!);
-        return verificationUri;
-    }
-
     public async Task<string> ConfirmEmailAsync(string userId, string code, string tenant, CancellationToken cancellationToken)
     {
         var user = await _userManager.Users

@@ -26,57 +26,27 @@ internal partial class UserService : IUserService
     private readonly UserManager<SeaPizzaUser> _userManager;
     private readonly RoleManager<SeaPizzaRole> _roleManager;
     private readonly SeaPizzaDbContext _db;
-    private readonly IJobService _jobService;
-    private readonly IMailService _mailService;
     private readonly SecuritySettings _securitySettings;
     private readonly IFileStorageService _fileStorage;
-    private readonly IEventPublisher _events;
-    private readonly ICacheService _cache;
-    private readonly ICacheKeyService _cacheKeys;
 
     public UserService(
         SignInManager<SeaPizzaUser> signInManager,
         UserManager<SeaPizzaUser> userManager,
         RoleManager<SeaPizzaRole> roleManager,
         SeaPizzaDbContext db,
-        IJobService jobService,
-        IMailService mailService,
         IFileStorageService fileStorage,
-        IEventPublisher events,
-        ICacheService cache,
-        ICacheKeyService cacheKeys,
         IOptions<SecuritySettings> securitySettings)
     {
         _signInManager = signInManager;
         _userManager = userManager;
         _roleManager = roleManager;
         _db = db;
-        _jobService = jobService;
-        _mailService = mailService;
         _fileStorage = fileStorage;
-        _events = events;
-        _cache = cache;
-        _cacheKeys = cacheKeys;
         _securitySettings = securitySettings.Value;
-    }
-
-    public async Task<PaginationResponse<UserDetailsDto>> SearchAsync(UserListFilter filter, CancellationToken cancellationToken)
-    {
-        var spec = new EntitiesByPaginationFilterSpec<SeaPizzaUser>(filter);
-
-        var users = await _userManager.Users
-            .WithSpecification(spec)
-            .ProjectToType<UserDetailsDto>()
-            .ToListAsync(cancellationToken);
-        int count = await _userManager.Users
-            .CountAsync(cancellationToken);
-
-        return new PaginationResponse<UserDetailsDto>(users, count, filter.PageNumber, filter.PageSize);
     }
 
     public async Task<bool> ExistsWithNameAsync(string name)
     {
-        EnsureValidTenant();
         return await _userManager.FindByNameAsync(name) is not null;
     }
 
@@ -87,7 +57,6 @@ internal partial class UserService : IUserService
 
     public async Task<bool> ExistsWithPhoneNumberAsync(string phoneNumber, string? exceptId = null)
     {
-        EnsureValidTenant();
         return await _userManager.Users.FirstOrDefaultAsync(x => x.PhoneNumber == phoneNumber) is SeaPizzaUser user && user.Id != exceptId;
     }
 

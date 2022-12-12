@@ -27,7 +27,6 @@ internal class TokenService : ITokenService
     public TokenService(
         UserManager<SeaPizzaUser> userManager,
         IOptions<JwtSettings> jwtSettings,
-        IStringLocalizer<TokenService> localizer,
         IOptions<SecuritySettings> securitySettings)
     {
         _userManager = userManager;
