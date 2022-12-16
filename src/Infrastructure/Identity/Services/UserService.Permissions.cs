@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SeaPizza.Application.Common.Exceptions;
+using SeaPizza.Application.Common.Caching;
 using SeaPizza.Shared.Authorization;
 using System;
 using System.Collections.Generic;
@@ -31,5 +32,15 @@ internal partial class UserService
         }
 
         return permissions.Distinct().ToList();
+    }
+
+    public async Task<bool> HasPermissionAsync(string userId, string permission, CancellationToken cancellationToken)
+    {
+        var permissions = await _cache.GetOrSetAsync(
+            _cacheKeys.GetCacheKey(SeaPizzaClaims.Permission, userId),
+            () => GetPermissionsAsync(userId, cancellationToken),
+            cancellationToken: cancellationToken);
+
+        return permissions?.Contains(permission) ?? false;
     }
 }

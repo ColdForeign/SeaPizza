@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
+using SeaPizza.Application.Common.Caching;
 using SeaPizza.Application.Common.Events;
 using SeaPizza.Application.Common.Exceptions;
 using SeaPizza.Application.Common.FileStorage;
@@ -28,6 +29,8 @@ internal partial class UserService : IUserService
     private readonly SeaPizzaDbContext _db;
     private readonly SecuritySettings _securitySettings;
     private readonly IFileStorageService _fileStorage;
+    private readonly ICacheService _cache;
+    private readonly ICacheKeyService _cacheKeys;
 
     public UserService(
         SignInManager<SeaPizzaUser> signInManager,
@@ -35,6 +38,8 @@ internal partial class UserService : IUserService
         RoleManager<SeaPizzaRole> roleManager,
         SeaPizzaDbContext db,
         IFileStorageService fileStorage,
+        ICacheService cache,
+        ICacheKeyService cacheKeys,
         IOptions<SecuritySettings> securitySettings)
     {
         _signInManager = signInManager;
@@ -42,6 +47,8 @@ internal partial class UserService : IUserService
         _roleManager = roleManager;
         _db = db;
         _fileStorage = fileStorage;
+        _cache = cache;
+        _cacheKeys = cacheKeys;
         _securitySettings = securitySettings.Value;
     }
 
