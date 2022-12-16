@@ -6,6 +6,7 @@
     "Description": "Clean Architecture example for .NET 7 WebApi.",
     "ContactName": "George Radchuk",
     "ContactEmail": "george.radchuk@gmail.com",
+    "ContactUrl": "",
     "License": true,
     "LicenseName": "MIT License",
     "LicenseUrl": "https://github.com/ColdForeign/SeaPizza/blob/develop/LICENSE"

@@ -7,6 +7,7 @@ using SeaPizza.Infrastructure.Auth;
 using SeaPizza.Infrastructure.Caching;
 using SeaPizza.Infrastructure.Common;
 using SeaPizza.Infrastructure.FileStorage;
+using SeaPizza.Infrastructure.OpenApi;
 using SeaPizza.Infrastructure.Persistence;
 using SeaPizza.Infrastructure.Persistence.Initialization;
 using System;
@@ -27,6 +28,7 @@ public static class Startup
             .AddAuth(config)
             .AddCaching(config)
             .AddApiVersioning()
+            .AddOpenApiDocumentation(config)
             .AddPersistence()
             .AddRouting(options => options.LowercaseUrls = true)
             .AddServices();
@@ -57,7 +59,8 @@ public static class Startup
             .UseRouting()
             .UseAuthentication()
             .UseCurrentUser()
-            .UseAuthorization();
+            .UseAuthorization()
+            .UseOpenApiDocumentation(config);
 
     public static IEndpointRouteBuilder MapEndpoints(this IEndpointRouteBuilder builder)
     {
