@@ -13,7 +13,9 @@ internal static class Startup
 {
     internal static IServiceCollection AddCaching(this IServiceCollection services, IConfiguration config)
     {
-        return services.AddTransient<ICacheService, LocalCacheService>()
+        return services.AddDistributedMemoryCache()
+            .AddTransient<ICacheService, DistributedCacheService>()
+            .AddTransient<ICacheService, LocalCacheService>()
             .AddMemoryCache();
     }
 }
