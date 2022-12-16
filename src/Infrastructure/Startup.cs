@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SeaPizza.Infrastructure.Auth;
+using SeaPizza.Infrastructure.Caching;
 using SeaPizza.Infrastructure.Common;
 using SeaPizza.Infrastructure.FileStorage;
 using SeaPizza.Infrastructure.Persistence;
@@ -24,6 +25,7 @@ public static class Startup
     {
         return services
             .AddAuth(config)
+            .AddCaching(config)
             .AddApiVersioning()
             .AddPersistence()
             .AddRouting(options => options.LowercaseUrls = true)
