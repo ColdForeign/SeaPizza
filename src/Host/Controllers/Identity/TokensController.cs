@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NSwag.Annotations;
 using SeaPizza.Application.Identity.Tokens;
 
 namespace SeaPizza.Host.Controllers.Identity
@@ -12,6 +13,7 @@ namespace SeaPizza.Host.Controllers.Identity
 
         [HttpPost]
         [AllowAnonymous]
+        [OpenApiOperation("Request an access token using credentials.", "")]
         public Task<TokenResponse> GetTokenAsync(TokenRequest request, CancellationToken cancellationToken)
         {
             return _tokenService.GetTokenAsync(request, GetIpAddress()!, cancellationToken);
@@ -19,6 +21,7 @@ namespace SeaPizza.Host.Controllers.Identity
 
         [HttpPost("refresh")]
         [AllowAnonymous]
+        [OpenApiOperation("Request an access token using a refresh token.", "")]
         [ApiConventionMethod(typeof(SeaPizzaApiConventions), nameof(SeaPizzaApiConventions.Search))]
         public Task<TokenResponse> RefreshAsync(RefreshTokenRequest request)
         {

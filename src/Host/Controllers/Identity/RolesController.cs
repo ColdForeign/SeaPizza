@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using NSwag.Annotations;
 using SeaPizza.Application.Identity.Roles;
 using SeaPizza.Infrastructure.Auth.Permissions;
 using SeaPizza.Shared.Authorization;
@@ -13,6 +14,7 @@ public class RolesController : VersionNeutralApiController
 
     [HttpGet]
     [MustHavePermission(SeaPizzaAction.View, SeaPizzaResource.Roles)]
+    [OpenApiOperation("Get a list of all roles.", "")]
     public Task<List<RoleDto>> GetListAsync(CancellationToken cancellationToken)
     {
         return _roleService.GetListAsync(cancellationToken);
@@ -20,6 +22,7 @@ public class RolesController : VersionNeutralApiController
 
     [HttpGet("{id}")]
     [MustHavePermission(SeaPizzaAction.View, SeaPizzaResource.Roles)]
+    [OpenApiOperation("Get role details.", "")]
     public Task<RoleDto> GetByIdAsync(string id)
     {
         return _roleService.GetByIdAsync(id);
@@ -27,6 +30,7 @@ public class RolesController : VersionNeutralApiController
 
     [HttpGet("{id}/permissions")]
     [MustHavePermission(SeaPizzaAction.View, SeaPizzaResource.RoleClaims)]
+    [OpenApiOperation("Get role details with its permissions.", "")]
     public Task<RoleDto> GetByIdWithPermissionsAsync(string id, CancellationToken cancellationToken)
     {
         return _roleService.GetByIdWithPermissionsAsync(id, cancellationToken);
@@ -34,6 +38,7 @@ public class RolesController : VersionNeutralApiController
 
     [HttpPut("{id}/permissions")]
     [MustHavePermission(SeaPizzaAction.Update, SeaPizzaResource.RoleClaims)]
+    [OpenApiOperation("Update a role's permissions.", "")]
     public async Task<ActionResult<string>> UpdatePermissionsAsync(string id, UpdateRolePermissionsRequest request, CancellationToken cancellationToken)
     {
         if (id != request.RoleId)
@@ -46,6 +51,7 @@ public class RolesController : VersionNeutralApiController
 
     [HttpPost]
     [MustHavePermission(SeaPizzaAction.Create, SeaPizzaResource.Roles)]
+    [OpenApiOperation("Create or update a role.", "")]
     public Task<string> RegisterRoleAsync(CreateOrUpdateRoleRequest request)
     {
         return _roleService.CreateOrUpdateAsync(request);
@@ -53,6 +59,7 @@ public class RolesController : VersionNeutralApiController
 
     [HttpDelete("{id}")]
     [MustHavePermission(SeaPizzaAction.Delete, SeaPizzaResource.Roles)]
+    [OpenApiOperation("Delete a role.", "")]
     public Task<string> DeleteAsync(string id)
     {
         return _roleService.DeleteAsync(id);
