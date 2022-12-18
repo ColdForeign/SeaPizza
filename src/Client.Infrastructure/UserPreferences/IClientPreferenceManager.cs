@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace SeaPizza.Client.Infrastructure.UserPreferences;
 
-internal interface IClientPreferenceManager : IPreferenceManager
+public interface IClientPreferenceManager : IPreferenceManager
 {
     Task<MudTheme> GetCurrentThemeAsync();
 

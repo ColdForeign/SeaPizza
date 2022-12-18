@@ -1,6 +1,8 @@
 ﻿using Blazored.LocalStorage;
 using MudBlazor;
+using SeaPizza.Client.Infrastructure.Common;
 using SeaPizza.Client.Infrastructure.Theme;
+using System;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -35,6 +37,27 @@ public class ClientPreferenceManager : IClientPreferenceManager
             preference.IsDrawerOpen = !preference.IsDrawerOpen;
             await SetPreference(preference);
             return preference.IsDrawerOpen;
+        }
+
+        return false;
+    }
+
+    public async Task<bool> ChangeLanguageAsync(string languageCode)
+    {
+        if (await GetPreference() is ClientPreference preference)
+        {
+            var language = Array.Find(LocalizationConstants.SupportedLanguages, a => a.Code == languageCode);
+            if (language?.Code is not null)
+            {
+                preference.LanguageCode = language.Code;
+            }
+            else
+            {
+                preference.LanguageCode = "en-EN";
+            }
+
+            await SetPreference(preference);
+            return true;
         }
 
         return false;

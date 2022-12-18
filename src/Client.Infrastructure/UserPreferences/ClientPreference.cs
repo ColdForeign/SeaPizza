@@ -1,4 +1,6 @@
-﻿using SeaPizza.Client.Infrastructure.Theme;
+﻿using SeaPizza.Client.Infrastructure.Common;
+using SeaPizza.Client.Infrastructure.Theme;
+using System.Linq;
 
 namespace SeaPizza.Client.Infrastructure.UserPreferences;
 
@@ -16,7 +18,7 @@ public class ClientPreference : IPreference
 
     public double BorderRadius { get; set; } = 5;
 
-    //public string LanguageCode { get; set; } = LocalizationConstants.SupportedLanguages.FirstOrDefault()?.Code ?? "en-US";
+    public string LanguageCode { get; set; } = LocalizationConstants.SupportedLanguages.FirstOrDefault()?.Code ?? "en-US";
 
     public TablePreference TablePreference { get; set; } = new TablePreference();
 }
