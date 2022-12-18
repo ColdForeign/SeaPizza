@@ -5,7 +5,7 @@
   ],
   "ignore": [
     "**/src/Infrastructure/Migrations/**",
-    "**/src/Host/Controllers/SeaPizzaApiConvention.cs"
+    "**/src/Host/Controllers/SeaPizzaApiConventions.cs"
   ],
   "absolute": true
 }
