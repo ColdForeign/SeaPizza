@@ -25,7 +25,6 @@ internal partial class UserService
         const string route = "account/reset-password";
         var endpointUri = new Uri(string.Concat($"{origin}/", route));
         string passwordResetUrl = QueryHelpers.AddQueryString(endpointUri.ToString(), "Token", code);
-        
 
         return "Password Reset Mail has been sent to your authorized Email.";
     }

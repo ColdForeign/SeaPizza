@@ -1,7 +1,11 @@
 {
-    "threshold": 0,
-    "reporters": [
-      "consoleFull"
-    ],
-    "absolute": true
-  }
+  "threshold": 0,
+  "reporters": [
+    "consoleFull"
+  ],
+  "ignore": [
+    "**/src/Infrastructure/Migrations/**",
+    "**/src/Host/Controllers/SeaPizzaApiConvention.cs"
+  ],
+  "absolute": true
+}
