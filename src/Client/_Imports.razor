@@ -1,7 +1,39 @@
 ﻿@using System.Net.Http
 @using System.Net.Http.Json
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.AspNetCore.Components.Routing
 @using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Components.Web.Virtualization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using Microsoft.AspNetCore.Components.WebAssembly.Http
+@using Microsoft.AspNetCore.WebUtilities
+@using Microsoft.Extensions.Configuration
+@using Microsoft.Extensions.DependencyInjection
+@using Microsoft.Extensions.Localization
 @using Microsoft.JSInterop
 @using SeaPizza.Client
+@using SeaPizza.Shared
+@using SeaPizza.Client.Pages.Authentication
+@using SeaPizza.Client.Components.Common
+@using SeaPizza.Client.Components.Localization
+@using SeaPizza.Client.Infrastructure.ApiClient
+@using SeaPizza.Client.Infrastructure.Auth
+@using SeaPizza.Client.Infrastructure.Common
+@using SeaPizza.Client.Infrastructure.UserPreferences
+
+@using SeaPizza.Shared.Authorization
+@using Blazored.LocalStorage
+@using Mapster
+@using MediatR.Courier
+@using MudBlazor
+
+@attribute [Authorize]
+
+@inject NavigationManager Navigation
+@inject ISnackbar Snackbar
+@inject IDialogService DialogService
+@inject IConfiguration Config
+@inject IClientPreferenceManager ClientPreferences
