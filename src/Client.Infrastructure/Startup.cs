@@ -1,19 +1,28 @@
 ﻿using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MudBlazor;
 using MudBlazor.Services;
 using SeaPizza.Client.Infrastructure.ApiClient;
+using SeaPizza.Client.Infrastructure.Auth;
 using SeaPizza.Client.Infrastructure.Common;
 using SeaPizza.Client.Infrastructure.UserPreferences;
+using SeaPizza.Shared.Authorization;
+using System;
+using System.Globalization;
 using System.Linq;
+using System.Net.Http;
 
 namespace SeaPizza.Client.Infrastructure;
 
 public static class Startup
 {
+    private const string ClientName = "SeaPizza.API";
+
     public static IServiceCollection AddClientServices(this IServiceCollection services, IConfiguration config) =>
         services
+            .AddLocalization(options => options.ResourcesPath = "Resources")
             .AddBlazoredLocalStorage()
             .AddMudServices(configuration =>
             {
@@ -25,7 +34,27 @@ public static class Startup
             })
             .AddScoped<IClientPreferenceManager, ClientPreferenceManager>()
             .AutoRegisterInterfaces<IAppService>()
-            .AutoRegisterInterfaces<IApiService>();
+            .AutoRegisterInterfaces<IApiService>()
+            .AddAuthentication(config)
+            .AddAuthorizationCore(RegisterPermissionClaims)
+    // Add Api Http Client.
+            .AddHttpClient(ClientName, client =>
+                {
+                    client.DefaultRequestHeaders.AcceptLanguage.Clear();
+                    client.DefaultRequestHeaders.AcceptLanguage.ParseAdd(CultureInfo.DefaultThreadCurrentCulture?.TwoLetterISOLanguageName);
+                    client.BaseAddress = new Uri(config[ConfigNames.ApiBaseUrl]);
+                })
+                .AddAuthenticationHandler(config)
+                .Services
+            .AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient(ClientName));
+
+    private static void RegisterPermissionClaims(AuthorizationOptions options)
+    {
+        foreach (var permission in SeaPizzaPermissions.All)
+        {
+            options.AddPolicy(permission.Name, policy => policy.RequireClaim(SeaPizzaClaims.Permission, permission.Name));
+        }
+    }
 
     public static IServiceCollection AutoRegisterInterfaces<T>(this IServiceCollection services)
     {

@@ -1,0 +1,29 @@
+﻿@inherits LayoutComponentBase
+
+<MudThemeProvider Theme="_currentTheme" />
+<MudDialogProvider />
+<MudSnackbarProvider />
+<AuthorizeView>
+    <NotAuthorized>
+        <MudAppBar Elevation="0" Style="background:#6e6e6e00!important">
+            <MudTooltip Duration="500" Text="#supportukraine" Placement="Placement.Bottom" RootClass="mr-3 py-3">
+                <span class="support-ukraine" aria-label="Ukraine flag in support of Ukraine and its people, #supportukraine" />
+            </MudTooltip>
+        </MudAppBar>
+        <MudContainer MaxWidth="MaxWidth.Small" Class="d-flex align-center" Style="height: 100vh;">
+            <MudPaper Elevation="25" Class="pa-8">
+                @Body
+            </MudPaper>
+        </MudContainer>
+    </NotAuthorized>
+    <Authorized>
+            <MudLayout>
+                <MudTooltip Duration="500" Text="#supportukraine" Placement="Placement.Bottom" RootClass="mr-3 py-3">
+                    <span class="support-ukraine" aria-label="Ukraine flag in support of Ukraine and its people, #supportukraine" />
+                </MudTooltip>
+                <MainLayout>
+                    @Body
+                </MainLayout>
+            </MudLayout>
+    </Authorized>
+</AuthorizeView>
