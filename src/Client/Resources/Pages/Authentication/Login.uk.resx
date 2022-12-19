@@ -150,6 +150,9 @@
   <data name="Register here" xml:space="preserve">
     <value>Зареєструйтесь тут</value>
   </data>
+  <data name="Register?" xml:space="preserve">
+    <value>Зареєструватися?</value>
+  </data>
   <data name="Remember me?" xml:space="preserve">
     <value>Запам'ятати мене?</value>
   </data>
@@ -157,6 +160,6 @@
     <value>Авторизуватися</value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>Авторизація</value>
+    <value>Вхід</value>
   </data>
 </root>

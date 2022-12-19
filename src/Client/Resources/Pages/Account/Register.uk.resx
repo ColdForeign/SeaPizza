@@ -123,6 +123,9 @@
   <data name="E-mail" xml:space="preserve">
     <value>Електронна пошта</value>
   </data>
+  <data name="Go Back" xml:space="preserve">
+    <value>Повернутися назад</value>
+  </data>
   <data name="I agree to the terms and privacy" xml:space="preserve">
     <value>Я згоден з умовами та конфіденційністю</value>
   </data>

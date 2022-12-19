@@ -117,34 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Already have an account?" xml:space="preserve">
-    <value>У вас вже є обліковий запис?</value>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
   </data>
-  <data name="Confirm Password" xml:space="preserve">
-    <value>Підтвердження пароля</value>
-  </data>
-  <data name="E-mail" xml:space="preserve">
-    <value>Електронна пошта</value>
-  </data>
-  <data name="First Name" xml:space="preserve">
-    <value>Ім'я</value>
-  </data>
-  <data name="Last Name" xml:space="preserve">
-    <value>Прізвище</value>
-  </data>
-  <data name="Password" xml:space="preserve">
-    <value>Пароль</value>
-  </data>
-  <data name="Phone Number" xml:space="preserve">
-    <value>Номер телефону</value>
-  </data>
-  <data name="Register" xml:space="preserve">
-    <value>Зареєструвати</value>
-  </data>
-  <data name="Sign In" xml:space="preserve">
-    <value>Авторизуватися</value>
-  </data>
-  <data name="User Name" xml:space="preserve">
-    <value>Ім'я користувача</value>
+  <data name="Logout Confirmation" xml:space="preserve">
+    <value>Logout Confirmation</value>
   </data>
 </root>

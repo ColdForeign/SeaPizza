@@ -120,14 +120,20 @@
   <data name="Already have an account?" xml:space="preserve">
     <value>Already have an account?</value>
   </data>
+  <data name="Confirm Password" xml:space="preserve">
+    <value>Confirm Password</value>
+  </data>
   <data name="E-mail" xml:space="preserve">
     <value>E-mail</value>
   </data>
-  <data name="Go Back" xml:space="preserve">
-    <value>Go Back</value>
+  <data name="First Name" xml:space="preserve">
+    <value>First Name</value>
   </data>
-  <data name="I agree to the terms and privacy" xml:space="preserve">
-    <value>I agree to the terms and privacy</value>
+  <data name="Last Name" xml:space="preserve">
+    <value>Last Name</value>
+  </data>
+  <data name="Or" xml:space="preserve">
+    <value>Or</value>
   </data>
   <data name="Password" xml:space="preserve">
     <value>Password</value>
@@ -141,10 +147,7 @@
   <data name="Sign In" xml:space="preserve">
     <value>Sign In</value>
   </data>
-  <data name="Sign Up" xml:space="preserve">
-    <value>Sign Up</value>
-  </data>
-  <data name="Username" xml:space="preserve">
-    <value>Username</value>
+  <data name="User Name" xml:space="preserve">
+    <value>User Name</value>
   </data>
 </root>
