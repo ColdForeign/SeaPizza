@@ -36,7 +36,15 @@ public partial class MainLayout
 
     private void Logout()
     {
-       
+        var parameters = new DialogParameters
+            {
+                { nameof(Dialogs.Logout.ContentText), $"{L["Logout Confirmation"]}"},
+                { nameof(Dialogs.Logout.ButtonText), $"{L["Logout"]}"},
+                { nameof(Dialogs.Logout.Color), Color.Error}
+            };
+
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Small, FullWidth = true };
+        DialogService.Show<Dialogs.Logout>(L["Logout"], parameters, options);
     }
 
     private void Profile()
