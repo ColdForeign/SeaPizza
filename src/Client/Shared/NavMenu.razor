@@ -1,5 +1,6 @@
 ﻿@inject IStringLocalizer<NavMenu> L
 
+<PersonCard Style="background-color: var(--mud-palette-drawer-background); color: var(--mud-palette-drawer-text); margin-bottom:0px!important" />
 <MudNavMenu>
     <MudText Typo="Typo.subtitle2" Color="Color.Primary" Class="ml-4 my-3">@L["Start"]</MudText>
     <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">@L["Home"]</MudNavLink>
@@ -14,7 +15,7 @@
     {
         <MudText Typo="Typo.subtitle2" Color="Color.Primary" Class="ml-4 my-3">@L["Management"]</MudText>
         <MudNavGroup Title="@L["Catalog"]" Expanded Icon="@Icons.Material.Filled.AddBox">
-            @if (_canViewProducts)
+        @if (_canViewProducts)
             {
                 <MudNavLink Href="/catalog/products" Icon="@Icons.Material.Filled.ShoppingBag" Class="SeaPizza-nav-child">
                     @L["Products"]

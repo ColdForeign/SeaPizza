@@ -117,20 +117,23 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Already have an account?" xml:space="preserve">
-    <value>У вас вже є обліковий запис?</value>
-  </data>
   <data name="Confirm Password" xml:space="preserve">
     <value>Підтвердження пароля</value>
   </data>
   <data name="E-mail" xml:space="preserve">
     <value>Електронна пошта</value>
   </data>
+  <data name="Enter your details below to set up your new account" xml:space="preserve">
+    <value>Введіть свої дані нижче, щоб створити обліковий запис</value>
+  </data>
   <data name="First Name" xml:space="preserve">
     <value>Ім'я</value>
   </data>
   <data name="Last Name" xml:space="preserve">
     <value>Прізвище</value>
+  </data>
+  <data name="New User Registration" xml:space="preserve">
+    <value>Реєстрація</value>
   </data>
   <data name="Or" xml:space="preserve">
     <value>Або</value>
@@ -145,7 +148,7 @@
     <value>Зареєструватися</value>
   </data>
   <data name="Sign In" xml:space="preserve">
-    <value>Увійти</value>
+    <value>Авторизуватися</value>
   </data>
   <data name="User Name" xml:space="preserve">
     <value>Ім'я користувача</value>
