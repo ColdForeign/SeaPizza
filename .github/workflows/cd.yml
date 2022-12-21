@@ -15,7 +15,7 @@ env:
   
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
     # uses GitHub's checkout action to checkout code form the master branch
     - uses: actions/checkout@v3
@@ -48,8 +48,9 @@ jobs:
       with:
         name: webapp
         path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+
   deploy:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     needs: build
     steps:
     - name: Download artifact from build job
@@ -57,9 +58,10 @@ jobs:
       with:
         name: webapp
         path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+
     - name: Deploy to Azure WebApp
       uses: azure/webapps-deploy@v2
       with:
         app-name: ${{ env.AZURE_WEBAPP_NAME }}
-        publish-profile: ${{ secrets.SeaPizza_C3C4 }}
+        publish-profile: ${{ secrets.SeaPizza_D532 }}
         package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }} 
