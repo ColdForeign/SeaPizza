@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <RootNamespace>SeaPizza.Client.Infrastructure</RootNamespace>
+    <AssemblyName>SeaPizza.Client.Infrastructure</AssemblyName>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>
