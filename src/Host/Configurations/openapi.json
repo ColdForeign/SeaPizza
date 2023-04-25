@@ -1,0 +1,13 @@
+{
+  "SwaggerSettings": {
+    "Enable": true,
+    "Title": "Sea Pizza App open API",
+    "Version": "1.0.0",
+    "Description": "Clean Architecture example for .NET 7 WebApi.",
+    "ContactName": "George Radchuk",
+    "ContactEmail": "george.radchuk@gmail.com",
+    "License": true,
+    "LicenseName": "MIT License",
+    "LicenseUrl": "https://github.com/ColdForeign/SeaPizza/blob/develop/LICENSE"
+  }
+}

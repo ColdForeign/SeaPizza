@@ -31,3 +31,5 @@ _ReSharper*/
 .idea/
 #Nuget packages folder
 packages/
+#Logs files
+Logs*/
