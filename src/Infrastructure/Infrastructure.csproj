@@ -24,6 +24,7 @@
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
     <PackageReference Include="Serilog.Formatting.Compact" Version="1.1.0" />
     <PackageReference Include="Figgle" Version="0.5.1" />
+    <PackageReference Include="Microsoft.Identity.Web" Version="2.7.0" />
   </ItemGroup>
 
   <ItemGroup>

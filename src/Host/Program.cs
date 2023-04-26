@@ -3,6 +3,7 @@ using SeaPizza.Infrastructure;
 using SeaPizza.Infrastructure.Common;
 using SeaPizza.Infrastructure.Logging.Serilog;
 using Serilog;
+using SeaPizza.Application;
 
 StaticLogger.EnsureInitialized();
 Log.Information("Server Booting Up...");
@@ -12,6 +13,7 @@ try
     var builder = WebApplication.CreateBuilder(args);
     builder.AddConfigurations().RegisterSerilog();
     builder.Services.AddInfrastructure(builder.Configuration);
+    builder.Services.AddApplication();
     builder.Services.AddRazorPages();
     var app = builder.Build();
 

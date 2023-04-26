@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SeaPizza.Infrastructure.Auth;
 using SeaPizza.Infrastructure.Common;
+using SeaPizza.Infrastructure.FileStorage;
 using SeaPizza.Infrastructure.Persistence;
 using SeaPizza.Infrastructure.Persistence.Initialization;
 using System;
@@ -50,8 +51,10 @@ public static class Startup
         builder
             .UseRequestLocalization()
             .UseStaticFiles()
+            .UseFileStorage()
             .UseRouting()
             .UseAuthentication()
+            .UseCurrentUser()
             .UseAuthorization();
 
     public static IEndpointRouteBuilder MapEndpoints(this IEndpointRouteBuilder builder)
