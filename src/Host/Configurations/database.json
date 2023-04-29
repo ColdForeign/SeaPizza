@@ -1,0 +1,5 @@
+{
+  "DatabaseSettings": {
+    "ConnectionString": "Host=localhost;Port=5432;Database=seaPizzaDb;Username=postgres;Password=admin;Include Error Detail=true"
+  }
+}
