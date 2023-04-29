@@ -8,9 +8,21 @@ internal static class Startup
 {
     internal static IServiceCollection AddJwtAuth(this IServiceCollection services)
     {
-        return services.AddOptions<JwtSettings>()
+        services.AddOptions<JwtSettings>()
             .BindConfiguration($"SecuritySettings:{nameof(JwtSettings)}")
             .ValidateDataAnnotations()
-            .ValidateOnStart().Services;
+            .ValidateOnStart();
+
+        services.AddSingleton<IConfigureOptions<JwtBearerOptions>, ConfigureJwtBearerOptions>();
+
+
+        return services
+            .AddAuthentication(authentication =>
+            {
+                authentication.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                authentication.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, null!)
+            .Services;
     }
 }

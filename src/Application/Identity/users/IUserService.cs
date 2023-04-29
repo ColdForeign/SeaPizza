@@ -30,6 +30,8 @@ public interface IUserService : ITransientService
 
     Task<List<string>> GetPermissionsAsync(string userId, CancellationToken cancellationToken);
 
+    Task<bool> HasPermissionAsync(string userId, string permission, CancellationToken cancellationToken = default);
+
     Task ToggleStatusAsync(ToggleUserStatusRequest request, CancellationToken cancellationToken);
 
     Task<string> CreateAsync(CreateUserRequest request, string origin);

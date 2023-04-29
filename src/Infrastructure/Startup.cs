@@ -4,8 +4,11 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SeaPizza.Infrastructure.Auth;
+using SeaPizza.Infrastructure.Caching;
 using SeaPizza.Infrastructure.Common;
 using SeaPizza.Infrastructure.FileStorage;
+using SeaPizza.Infrastructure.Middleware;
+using SeaPizza.Infrastructure.OpenApi;
 using SeaPizza.Infrastructure.Persistence;
 using SeaPizza.Infrastructure.Persistence.Initialization;
 using System;
@@ -23,8 +26,11 @@ public static class Startup
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration config)
     {
         return services
-            .AddAuth(config)
             .AddApiVersioning()
+            .AddAuth(config)
+            .AddCaching(config)
+            .AddExceptionMiddleware()
+            .AddOpenApiDocumentation(config)
             .AddPersistence()
             .AddRouting(options => options.LowercaseUrls = true)
             .AddServices();
@@ -52,10 +58,12 @@ public static class Startup
             .UseRequestLocalization()
             .UseStaticFiles()
             .UseFileStorage()
+            .UseExceptionMiddleware()
             .UseRouting()
             .UseAuthentication()
             .UseCurrentUser()
-            .UseAuthorization();
+            .UseAuthorization()
+            .UseOpenApiDocumentation(config);
 
     public static IEndpointRouteBuilder MapEndpoints(this IEndpointRouteBuilder builder)
     {
