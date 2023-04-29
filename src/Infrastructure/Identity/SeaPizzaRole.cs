@@ -12,5 +12,4 @@ public class SeaPizzaRole : IdentityRole
         Description = description;
         NormalizedName = name.ToUpperInvariant();
     }
-
 }
