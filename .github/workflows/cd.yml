@@ -58,8 +58,8 @@ jobs:
       run: dotnet publish ./src/Host/Host.csproj -c Release --output release --nologo
       
     # changes the base-tag in index.html from '/' to 'Cropper.Blazor' to match GitHub Pages repository subdirectory
-    - name: Change base-tag in index.html from / to Cropper.Blazor
-      run: sed -i 's/<base href="\/" \/>/<base href="\/Sea.Pizza\/" \/>/g' release/wwwroot/index.html
+    - name: Change base-tag in index.html from / to seapizza
+      run: sed -i 's/<base href="\/" \/>/<base href="\/seapizza\/" \/>/g' release/wwwroot/index.html
      
     # copy index.html to 404.html to serve the same file when a file is not found
     - name: copy index.html to 404.html
