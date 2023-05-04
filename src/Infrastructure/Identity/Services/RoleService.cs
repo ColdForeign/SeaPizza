@@ -1,14 +1,11 @@
 ﻿using Mapster;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Localization;
-using SeaPizza.Application.Common.Events;
 using SeaPizza.Application.Common.Exceptions;
 using SeaPizza.Application.Common.Interfaces;
 using SeaPizza.Application.Identity.Roles;
 using SeaPizza.Infrastructure.Persistence.Context;
 using SeaPizza.Shared.Authorization;
-using SeaPizza.Shared.Events;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;

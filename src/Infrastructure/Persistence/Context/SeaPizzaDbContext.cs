@@ -10,10 +10,9 @@ namespace SeaPizza.Infrastructure.Persistence.Context
 {
     public class SeaPizzaDbContext : BaseDbContext
     {
-        public SeaPizzaDbContext (DbContextOptions options, IOptions<DatabaseSettings> dbSettings)
+        public SeaPizzaDbContext(DbContextOptions options, IOptions<DatabaseSettings> dbSettings)
             : base(options, dbSettings)
         {
         }
-
     }
 }
