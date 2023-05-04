@@ -18,10 +18,10 @@ jobs:
     environment: github-pages
     needs: demo-projects-build
     steps:
-      # uses GitHub's checkout action to checkout code form the master branch
+    # uses GitHub's checkout action to checkout code form the master branch
     - uses: actions/checkout@v3
     
-      # sets up .NET Core SDK 7, 6
+    # sets up .NET Core SDK 7, 6
     - name: Setup .NET 7, 6
       uses: actions/setup-dotnet@v3
       with:
@@ -36,7 +36,15 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
       working-directory: src/Host
-      
+     
+    #substitute production appsettings entries to appsettings json file
+    - name: App Settings Variable Substitution
+      uses: microsoft/variable-substitution@v1
+      with:
+        files: './src/Host/Configurations/database.json'
+      env:
+        ConnectionStrings.Default: ${{ secrets.CONNECTION_STRING }}
+
     #- name: Test
     #  run: dotnet test --no-build --verbosity normal /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:ExcludeByAttribute='ExcludeFromCodeCoverage' /p:SkipAutoProps=true /p:Exclude="[*]Cropper.Blazor.Testing.*"
     #  working-directory: src/Cropper.Blazor/Cropper.Blazor.UnitTests    
@@ -48,19 +56,19 @@ jobs:
     #    fail_ci_if_error: true
     #    verbose: true
         
-     # publishes Blazor project to the release-folder
+    # publishes Blazor project to the release-folder
     - name: Publish .NET Core Project
       run: dotnet publish ./src/Host/Host.csproj -c Release --output release --nologo
       
-     # changes the base-tag in index.html from '/' to 'Cropper.Blazor' to match GitHub Pages repository subdirectory
-     #- name: Change base-tag in index.html from / to Cropper.Blazor
-     #  run: sed -i 's/<base href="\/" \/>/<base href="\/Cropper.Blazor\/" \/>/g' release/wwwroot/index.html
+    # changes the base-tag in index.html from '/' to 'Cropper.Blazor' to match GitHub Pages repository subdirectory
+    - name: Change base-tag in index.html from / to Cropper.Blazor
+      run: sed -i 's/<base href="\/" \/>/<base href="\/Sea.Pizza\/" \/>/g' release/wwwroot/index.html
      
-     # copy index.html to 404.html to serve the same file when a file is not found
+    # copy index.html to 404.html to serve the same file when a file is not found
     - name: copy index.html to 404.html
       run: cp release/wwwroot/index.html release/wwwroot/404.html
 
-     # add .nojekyll file to tell GitHub pages to not treat this as a Jekyll project. (Allow files and folders starting with an underscore)
+    # add .nojekyll file to tell GitHub pages to not treat this as a Jekyll project. (Allow files and folders starting with an underscore)
     - name: Add .nojekyll file
       run: touch release/wwwroot/.nojekyll
       

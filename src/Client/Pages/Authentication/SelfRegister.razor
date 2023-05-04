@@ -1,0 +1,73 @@
+﻿@page "/users/self-register"
+@attribute [AllowAnonymous]
+@inject IStringLocalizer<SelfRegister> L
+
+<EditForm Model="@_createUserRequest" OnValidSubmit="SubmitAsync">
+    <MudCard Elevation="0" Class="my-0">
+        <MudCardHeader Class="pa-0">
+            <CardHeaderContent>
+
+                <div class="d-flex justify-center">
+                    <img src="SeaPizzaLogo.png" Style="height:120px" />
+                </div>
+                <div class="center-text">
+                    <MudText Typo="Typo.h4" GutterBottom="true" style="margin-bottom:5px">
+                        @L["New User Registration"]
+                    </MudText>
+                    <MudText>@L["Enter your details below to set up your new account"]</MudText>
+                </div>
+                <br />
+            </CardHeaderContent>
+        </MudCardHeader>
+        <MudCardContent Class="pa-0">
+            <MudGrid>
+                <DataAnnotationsValidator />
+                <CustomValidation @ref="_customValidation" />
+
+                <MudItem xs="12" md="6">
+                    <MudTextField T="string" Label="@L["First Name"]" Variant="Variant.Outlined"
+                                  @bind-Value="_createUserRequest.FirstName" For="@(() => _createUserRequest.FirstName)"
+                                  InputType="InputType.Text" Adornment="Adornment.End" />
+                </MudItem>
+                <MudItem xs="12" md="6">
+                    <MudTextField T="string" Label="@L["Last Name"]" Variant="Variant.Outlined"
+                                  @bind-Value="_createUserRequest.LastName" For="@(() => _createUserRequest.LastName)"
+                                  InputType="InputType.Text" Adornment="Adornment.End" />
+                </MudItem>
+                <MudItem xs="12" md="12">
+                    <MudTextField T="string" Label="@L["User Name"]" Variant="Variant.Outlined"
+                                  @bind-Value="_createUserRequest.UserName" For="@(() => _createUserRequest.UserName)"
+                                  InputType="InputType.Text" Adornment="Adornment.End" />
+                </MudItem>
+                <MudItem xs="12" md="12">
+                    <MudTextField T="string" Label="@L["E-mail"]" Variant="Variant.Outlined"
+                                  @bind-Value="_createUserRequest.Email" For="@(() => _createUserRequest.Email)"
+                                  InputType="InputType.Email" Adornment="Adornment.End" />
+                </MudItem>
+                <MudItem xs="12" md="6">
+                    <MudTextField Label="@L["Password"]" Variant="Variant.Outlined" @bind-Value="_createUserRequest.Password"
+                                  For="@(() => _createUserRequest.Password)" InputType="@_passwordInput" Adornment="Adornment.End"
+                                  AdornmentIcon="@_passwordInputIcon" OnAdornmentClick="TogglePasswordVisibility" />
+                </MudItem>
+                <MudItem xs="12" md="6">
+                    <MudTextField Label="@L["Confirm Password"]" Variant="Variant.Outlined" @bind-Value="_createUserRequest.ConfirmPassword"
+                                  For="@(() => _createUserRequest.ConfirmPassword)" InputType="@_passwordInput" Adornment="Adornment.End"
+                                  AdornmentIcon="@_passwordInputIcon" OnAdornmentClick="TogglePasswordVisibility" />
+                </MudItem>
+            </MudGrid>
+        </MudCardContent>
+        <MudCardActions Class="d-flex justify-xs-center justify-sm-space-between justify-space-between flex-wrap gap-6 flex-grow-1 pa-0 pt-4">
+            <MudButton StartIcon="@Icons.Material.Filled.AppRegistration" Variant="Variant.Filled" Color="Color.Primary"
+                       Size="Size.Large" ButtonType="ButtonType.Submit" Disabled="BusySubmitting" Class="flex-grow-1 order-md-3">
+                @L["Register"]
+            </MudButton>
+
+            <MudText Class="flex-grow-1 order-md-2">@L["Or"]</MudText>
+
+            <MudButton StartIcon="@Icons.Material.Filled.Login" Variant="Variant.Filled"
+                       Color="Color.Inherit" Size="Size.Large" Href="/" Class="flex-grow-1 order-md-1">
+                @L["Sign In"]
+            </MudButton>
+        </MudCardActions>
+    </MudCard>
+</EditForm>
