@@ -8,10 +8,10 @@ on:
 
 env:
   AZURE_WEBAPP_NAME: SeaPizza
-  AZURE_WEBAPP_PACKAGE_PATH: src\Host\published
+  AZURE_WEBAPP_PACKAGE_PATH: src/Host/published
   CONFIGURATION: Release
   DOTNET_CORE_VERSION: 7.0.x
-  WORKING_DIRECTORY: src\Host
+  WORKING_DIRECTORY: src/Host
   
 jobs:
   build:
