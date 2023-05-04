@@ -40,7 +40,7 @@ jobs:
       with:
         files: './src/Host/Configurations/database.json'
       env:
-        ConnectionStrings.Default: ${{ secrets.CONNECTION_STRING }}
+        DatabaseSettings.ConnectionString: ${{ secrets.CONNECTION_STRING }}
 
     #- name: Test
     #  run: dotnet test --no-build --verbosity normal /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:ExcludeByAttribute='ExcludeFromCodeCoverage' /p:SkipAutoProps=true /p:Exclude="[*]Cropper.Blazor.Testing.*"
